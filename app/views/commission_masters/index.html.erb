@@ -43,7 +43,7 @@
         <div>
           <%= f.label :commission_fee_cont %>
           <div class="ps-2">
-            <%= f.search_field :commission_fee_cont, class: %w[form-control form-control-sm] %>
+            <%= f.search_field :commission_fee_eq, class: %w[form-control form-control-sm] %>
           </div>
         </div>
         <div>
@@ -97,7 +97,7 @@
           <td><%= commission_master.id %></td>
           <td><%= commission_master.from_date && l(commission_master.from_date) %></td>
           <td><%= commission_master.to_date && l(commission_master.to_date) %></td>
-          <td><%= commission_master.commission_fee %></td>
+          <td><%= number_with_precision(commission_master.commission_fee, precision:1) %></td>
           <td><%= commission_master.created_at && l(commission_master.created_at) %></td>
           <td><%= commission_master.updated_at && l(commission_master.updated_at) %></td>
           <td>

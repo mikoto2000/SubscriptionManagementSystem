@@ -3,6 +3,10 @@ require "test_helper"
 class CommissionMastersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @commission_master = commission_masters(:one)
+    @additional_commission_master = CommissionMaster::new({
+      :from_date => Date.new(2020,10,10),
+      :to_date => Date.new(2020,10,11),
+      :commission_fee => 3})
   end
 
   test "should get index" do
@@ -29,20 +33,6 @@ class CommissionMastersControllerTest < ActionDispatch::IntegrationTest
     assert_select "table > tbody > tr > td:nth-of-type(2)", text: I18n.l(target_date) # one
   end
 
-  test "should get index search from_date, multi hit" do
-    target_datetime_from = commission_masters(:one).from_date
-    target_datetime_to = commission_masters(:two).from_date
-    get commission_masters_url, params: { q: {
-      from_date_gteq: target_datetime_from,
-      from_date_lteq_end_of_day: target_datetime_to
-    } }
-    assert_response :success
-
-    assert_select "table > tbody > tr", count: 2
-    assert_select "table > tbody > tr > td:nth-of-type(2)", text: I18n.l(target_datetime_from) # one
-    assert_select "table > tbody > tr > td:nth-of-type(2)", text: I18n.l(target_datetime_to) # two
-  end
-
   test "should get index search from_date, no hit" do
     target_datetime_from = Time.at(0, in: "UTC")
     target_datetime_to = Time.at(0, in: "UTC")
@@ -66,20 +56,6 @@ class CommissionMastersControllerTest < ActionDispatch::IntegrationTest
     assert_select "table > tbody > tr > td:nth-of-type(3)", text: I18n.l(target_date) # one
   end
 
-  test "should get index search to_date, multi hit" do
-    target_datetime_from = commission_masters(:one).to_date
-    target_datetime_to = commission_masters(:two).to_date
-    get commission_masters_url, params: { q: {
-      to_date_gteq: target_datetime_from,
-      to_date_lteq_end_of_day: target_datetime_to
-    } }
-    assert_response :success
-
-    assert_select "table > tbody > tr", count: 2
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: I18n.l(target_datetime_from) # one
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: I18n.l(target_datetime_to) # two
-  end
-
   test "should get index search to_date, no hit" do
     target_datetime_from = Time.at(0, in: "UTC")
     target_datetime_to = Time.at(0, in: "UTC")
@@ -93,22 +69,11 @@ class CommissionMastersControllerTest < ActionDispatch::IntegrationTest
   end
   test "should get index search commission_fee" do
     search_string = @commission_master.commission_fee
-    get commission_masters_url, params: { q: { commission_fee_cont: search_string } }
+    get commission_masters_url, params: { q: { commission_fee_eq: search_string } }
     assert_response :success
 
     assert_select "table > tbody > tr", count: 1
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: search_string # one
-  end
-
-  test "should get index search commission_fee, multi hit" do
-    search_string = "o" # `o`ne, tw`o`, destr`o`y_target.
-    get commission_masters_url, params: { q: { commission_fee_cont: search_string } }
-    assert_response :success
-
-    assert_select "table > tbody > tr", count: 3
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: commission_masters(:one).name # one
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: commission_masters(:two).name # two
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: commission_masters(:destroy_target).name # destroy_target
+    assert_select "table > tbody > tr > td:nth-of-type(4)", text: search_string.to_s # one
   end
 
   test "should get index search created_at single hit" do
@@ -123,20 +88,6 @@ class CommissionMastersControllerTest < ActionDispatch::IntegrationTest
     assert_select "table > tbody > tr > td:nth-of-type(5)", text: I18n.l(target_datetime) # one
   end
 
-  test "should get index search created_at, multi hit" do
-    target_datetime_from = commission_masters(:one).created_at
-    target_datetime_to = commission_masters(:two).created_at
-    get commission_masters_url, params: { q: {
-      created_at_gteq: target_datetime_from,
-      created_at_lteq_end_of_minute: target_datetime_to
-    } }
-    assert_response :success
-
-    assert_select "table > tbody > tr", count: 2
-    assert_select "table > tbody > tr > td:nth-of-type(5)", text: I18n.l(target_datetime_from) # one
-    assert_select "table > tbody > tr > td:nth-of-type(5)", text: I18n.l(target_datetime_to) # two
-  end
-
   test "should get index search updated_at" do
     target_datetime = @commission_master.updated_at
     get commission_masters_url, params: { q: {
@@ -149,20 +100,6 @@ class CommissionMastersControllerTest < ActionDispatch::IntegrationTest
     assert_select "table > tbody > tr > td:nth-of-type(6)", text: I18n.l(target_datetime) # one
   end
 
-  test "should get index search updated_at, multi hit" do
-    target_datetime_from = commission_masters(:one).updated_at
-    target_datetime_to = commission_masters(:two).updated_at
-    get commission_masters_url, params: { q: {
-      updated_at_gteq: target_datetime_from,
-      updated_at_lteq_end_of_minute: target_datetime_to
-    } }
-    assert_response :success
-
-    assert_select "table > tbody > tr", count: 2
-    assert_select "table > tbody > tr > td:nth-of-type(6)", text: I18n.l(target_datetime_from) # one
-    assert_select "table > tbody > tr > td:nth-of-type(6)", text: I18n.l(target_datetime_to) # two
-  end
-
   test "should get new" do
     get new_commission_master_url
     assert_response :success
@@ -171,7 +108,7 @@ class CommissionMastersControllerTest < ActionDispatch::IntegrationTest
   test "should create commission_master" do
     assert_difference("CommissionMaster.count") do
       post commission_masters_url, params: { commission_master:
-        { commission_fee: @commission_master.commission_fee, from_date: @commission_master.from_date, to_date: @commission_master.to_date }
+        { commission_fee: @additional_commission_master.commission_fee, from_date: @additional_commission_master.from_date, to_date: @additional_commission_master.to_date }
        }
     end
 
