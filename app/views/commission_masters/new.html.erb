@@ -1,0 +1,8 @@
+<h1><%= t("view.new.title", model: CommissionMaster.model_name.human) %></h1>
+<%= render "form", commission_master: @commission_master %>
+
+<br>
+
+<div>
+  <%= link_to t("view.new.move_to_index", model: CommissionMaster.model_name.human.pluralize), commission_masters_path %>
+</div>

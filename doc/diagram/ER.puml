@@ -51,9 +51,9 @@ entity PaymentStatus {
 }
 
 entity CommissionMaster {
-  from_month: date
-  to_month: date
-  commission_fee: number
+  from: date
+  to: date
+  commission_fee: decimal
 }
 
 note right: from から to までの手数料。publisher は、\nサブスクリプションの x % をシステムに支払う。

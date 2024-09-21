@@ -1,0 +1,62 @@
+<div id="<%= dom_id commission_master %>">
+  <table class="table table-hover">
+    <tr>
+      <td>
+        <strong>Id:</strong>
+      </td>
+      <td>
+        <%= commission_master.id %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= CommissionMaster.human_attribute_name(:from_date) %>
+        </strong>
+      </td>
+      <td>
+        <%= commission_master.from_date && l(commission_master.from_date) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= CommissionMaster.human_attribute_name(:to_date) %>
+        </strong>
+      </td>
+      <td>
+        <%= commission_master.to_date && l(commission_master.to_date) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= CommissionMaster.human_attribute_name(:commission_fee) %>
+        </strong>
+      </td>
+      <td>
+        <%= commission_master.commission_fee %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= CommissionMaster.human_attribute_name(:created_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= commission_master.created_at && l(commission_master.created_at) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= CommissionMaster.human_attribute_name(:updated_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= commission_master.updated_at && l(commission_master.updated_at) %>
+      </td>
+    </tr>
+  </table>
+</div>
