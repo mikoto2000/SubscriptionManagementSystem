@@ -1,0 +1,69 @@
+@startuml
+
+entity Publisher {
+  *id
+  --
+  * name
+  * email_address
+}
+
+entity Subscriber {
+  * id
+  --
+  * name
+  * email_address
+}
+
+entity Subscription {
+  * id
+  --
+  * publisher_id (FK:publisher(id))
+  * subscriver_id (FK:subscriver(id))
+  * start_date: date
+    end_date: date
+    plan_id (FK:plan(id))
+}
+
+entity Plan {
+  * id
+  --
+  * publisher_id (FK:publisher(id))(UNIQUE:1)
+  * name (UNIQUE:1)
+  * cost: bigint
+}
+
+entity Payment {
+  * id
+  --
+  month_for_payment: date
+  payment_date: date
+  payment_status: (FK: payment_status(id))
+  publisher_id (FK:publisher(id)
+  subscriber_id (FK:subscriber(id)
+}
+
+note right: Single Table Inhelitance で、\npublisher からの支払いと\nsubscriber からの支払いを扱う
+
+entity PaymentStatus {
+  * id
+  --
+  * name
+}
+
+entity CommissionMaster {
+  from_month: date
+  to_month: date
+  commission_fee: number
+}
+
+note right: from から to までの手数料。publisher は、\nサブスクリプションの x % をシステムに支払う。
+
+Publisher }o-|| Subscription
+Subscription ||-o{ Subscriber
+Subscription }o--|| Plan
+PaymentStatus ||--o{ Payment 
+
+Payment }o--|| Publisher
+Payment }o--|| Subscriber
+
+@enduml
