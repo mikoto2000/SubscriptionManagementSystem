@@ -1,0 +1,52 @@
+<div id="<%= dom_id subscriber %>">
+  <table class="table table-hover">
+    <tr>
+      <td>
+        <strong>Id:</strong>
+      </td>
+      <td>
+        <%= subscriber.id %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscriber.human_attribute_name(:name) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscriber.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscriber.human_attribute_name(:email_address) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscriber.email_address %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscriber.human_attribute_name(:created_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscriber.created_at && l(subscriber.created_at) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscriber.human_attribute_name(:updated_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscriber.updated_at && l(subscriber.updated_at) %>
+      </td>
+    </tr>
+  </table>
+</div>
