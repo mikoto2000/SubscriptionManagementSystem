@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_071417) do
     t.decimal "cost", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["publisher_id", "name"], name: "index_plans_on_publisher_id_and_name", unique: true
     t.index ["publisher_id"], name: "index_plans_on_publisher_id"
   end
 
