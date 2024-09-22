@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_21_104353) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_22_033048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,5 +22,13 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_21_104353) do
     t.datetime "updated_at", null: false
 
     t.exclusion_constraint "daterange(from_date, to_date, '[]'::text) WITH &&", using: :gist, name: "exclude_overlapping_commission_masters"
+  end
+
+  create_table "publishers", force: :cascade do |t|
+    t.string "name"
+    t.string "email_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_publishers_on_email_address", unique: true
   end
 end
