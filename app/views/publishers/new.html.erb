@@ -1,0 +1,8 @@
+<h1><%= t("view.new.title", model: Publisher.model_name.human) %></h1>
+<%= render "form", publisher: @publisher %>
+
+<br>
+
+<div>
+  <%= link_to t("view.new.move_to_index", model: Publisher.model_name.human.pluralize), publishers_path %>
+</div>

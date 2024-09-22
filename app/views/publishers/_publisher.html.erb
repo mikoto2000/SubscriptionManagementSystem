@@ -1,0 +1,52 @@
+<div id="<%= dom_id publisher %>">
+  <table class="table table-hover">
+    <tr>
+      <td>
+        <strong>Id:</strong>
+      </td>
+      <td>
+        <%= publisher.id %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Publisher.human_attribute_name(:name) %>
+        </strong>
+      </td>
+      <td>
+        <%= publisher.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Publisher.human_attribute_name(:email_address) %>
+        </strong>
+      </td>
+      <td>
+        <%= publisher.email_address %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Publisher.human_attribute_name(:created_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= publisher.created_at && l(publisher.created_at) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Publisher.human_attribute_name(:updated_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= publisher.updated_at && l(publisher.updated_at) %>
+      </td>
+    </tr>
+  </table>
+</div>
