@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_22_053642) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_22_071417) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,19 +24,30 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_053642) do
     t.exclusion_constraint "daterange(from_date, to_date, '[]'::text) WITH &&", using: :gist, name: "exclude_overlapping_commission_masters"
   end
 
+  create_table "plans", force: :cascade do |t|
+    t.bigint "publisher_id", null: false
+    t.string "name", null: false
+    t.decimal "cost", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_plans_on_publisher_id"
+  end
+
   create_table "publishers", force: :cascade do |t|
-    t.string "name"
-    t.string "email_address"
+    t.string "name", null: false
+    t.string "email_address", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_publishers_on_email_address", unique: true
   end
 
   create_table "subscribers", force: :cascade do |t|
-    t.string "name"
-    t.string "email_address"
+    t.string "name", null: false
+    t.string "email_address", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_subscribers_on_email_address", unique: true
   end
+
+  add_foreign_key "plans", "publishers"
 end

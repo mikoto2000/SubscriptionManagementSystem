@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :plans
   resources :subscribers
   resources :publishers
   resources :commission_masters
