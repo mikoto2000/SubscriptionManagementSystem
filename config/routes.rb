@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :subscriptions
   resources :plans
   resources :subscribers
   resources :publishers

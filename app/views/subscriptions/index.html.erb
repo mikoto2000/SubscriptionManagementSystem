@@ -1,0 +1,168 @@
+<div style="display: flex;flex-direction: column;height: 100vh;">
+
+  <header class="main-content-header">
+    <p style="color: green"><%= notice %></p>
+
+    <h1><%= Subscription.model_name.human %><%= link_to "", new_subscription_path, class: %w[bi bi-plus-circle-fill ms-2] %></h1>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="search-form-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#search-form"
+          aria-expanded="false"
+          aria-controls="search-form"><%= t("view.index.search_condition") %></button>
+      </h2>
+      <div id="search-form" class="panel panel-default accordion-collapse collapse" aria-labelledby="headingOne">
+<%= search_form_for @q, html: { class: %w[form-control form-control-sm], data: { turbo_frame: "list" } } do |f| %>
+        <div>
+          <%= f.label :id_eq %>
+          <div class="ps-2">
+            <%= f.number_field :id_eq, class: %w[form-control form-control-sm] %>
+          </div>
+        </div>
+        <div>
+          <%= f.label Subscription.reflect_on_association(:publisher).foreign_key + "_in".to_s %>
+          <div class="ps-2">
+            <%= f.collection_select(
+                  Subscription.reflect_on_association(:publisher).foreign_key + "_in".to_s,
+                  Subscription.reflect_on_association(:publisher).klass.all,
+                  :id,
+                  :name,
+                  {},
+                  { multiple: true }
+                ) %>
+          </div>
+        </div>
+        <div>
+          <%= f.label Subscription.reflect_on_association(:subscriber).foreign_key + "_in".to_s %>
+          <div class="ps-2">
+            <%= f.collection_select(
+                  Subscription.reflect_on_association(:subscriber).foreign_key + "_in".to_s,
+                  Subscription.reflect_on_association(:subscriber).klass.all,
+                  :id,
+                  :name,
+                  {},
+                  { multiple: true }
+                ) %>
+          </div>
+        </div>
+        <div>
+          <%= f.label :start_date %>
+          <div class="ps-2">
+            <%= f.date_field :start_date_gteq, class: %w[form-control form-control-sm] %>
+            ～
+            <%= f.date_field :start_date_lteq_end_of_day, class: %w[form-control form-control-sm] %>
+          </div>
+        </div>
+        <div>
+          <%= f.label :end_date %>
+          <div class="ps-2">
+            <%= f.date_field :end_date_gteq, class: %w[form-control form-control-sm] %>
+            ～
+            <%= f.date_field :end_date_lteq_end_of_day, class: %w[form-control form-control-sm] %>
+          </div>
+        </div>
+        <div>
+          <%= f.label Subscription.reflect_on_association(:plan).foreign_key + "_in".to_s %>
+          <div class="ps-2">
+            <%= f.collection_select(
+                  Subscription.reflect_on_association(:plan).foreign_key + "_in".to_s,
+                  Subscription.reflect_on_association(:plan).klass.all,
+                  :id,
+                  :name,
+                  {},
+                  { multiple: true }
+                ) %>
+          </div>
+        </div>
+        <div>
+          <%= f.label :created_at %>
+          <div class="ps-2">
+            <%= f.datetime_field :created_at_gteq, class: %w[form-control form-control-sm] %>
+            ～
+            <%= f.datetime_field :created_at_lteq_end_of_minute, class: %w[form-control form-control-sm] %>
+          </div>
+        </div>
+        <div>
+          <%= f.label :updated_at %>
+          <div class="ps-2">
+            <%= f.datetime_field :updated_at_gteq, class: %w[form-control form-control-sm] %>
+            ～
+            <%= f.datetime_field :updated_at_lteq_end_of_minute, class: %w[form-control form-control-sm] %>
+          </div>
+        </div>
+        <%= f.hidden_field :limit, id: "f-limit", value: params[:limit] || Pagy::DEFAULT[:limit] %>
+        <%= f.submit class: %w[btn btn-primary] %>
+        <input
+          type="reset"
+          class="btn btn-primary"
+          onclick="clear_form(arguments[0], this)"
+          value="<%= t("helpers.submit.clear") %>">
+<%- end -%>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex-grow: 1;flex-shrink: 1;overflow-y: auto;">
+<%= turbo_frame_tag "list" do %>
+  <div id="subscriptions" class="text-nowrap">
+    <table class="table table-hover text-nowrap">
+      <thead class="table-light sticky-top">
+        <th><%= sort_link(@q, :id, default_order: :asc, class: "d-block") %></th>
+        <th><%= sort_link(@q, :publisher_id, default_order: :asc, class: "d-block") %></th>
+        <th><%= sort_link(@q, :subscriber_id, default_order: :asc, class: "d-block") %></th>
+        <th><%= sort_link(@q, :start_date, default_order: :asc, class: "d-block") %></th>
+        <th><%= sort_link(@q, :end_date, default_order: :asc, class: "d-block") %></th>
+        <th><%= sort_link(@q, :plan_id, default_order: :asc, class: "d-block") %></th>
+        <th><%= sort_link(@q, :created_at, default_order: :asc, class: "d-block") %></th>
+        <th><%= sort_link(@q, :updated_at, default_order: :asc, class: "d-block") %></th>
+        <th><%= t("view.index.operation") %></th>
+      </thead>
+      <tbody>
+  <%- @subscriptions.each do |subscription| %>
+        <tr
+          tabindex="0"
+          role="button"
+          onkeypress="handleEnterKeypressListIten(arguments[0], this, '<%= url_target(nil, subscription).to_s %>')"
+          onclick="handleClickListItem(arguments[0], this, '<%= url_target(nil, subscription).to_s %>')">
+          <td><%= subscription.id %></td>
+          <td><%= subscription.publisher.name %></td>
+          <td><%= subscription.subscriber.name %></td>
+          <td><%= subscription.start_date && l(subscription.start_date) %></td>
+          <td><%= subscription.end_date && l(subscription.end_date) %></td>
+          <td><%= subscription.plan.name %></td>
+          <td><%= subscription.created_at && l(subscription.created_at) %></td>
+          <td><%= subscription.updated_at && l(subscription.updated_at) %></td>
+          <td>
+            <%= button_to(
+                  t("helpers.submit.delete"),
+                  subscription,
+                  method: :delete,
+                  tabindex: 0,
+                  class: %w[btn btn-primary],
+                  onclick: "handleDeleteListItem(arguments[0], this)",
+                  data: { turbo_confirm: t("helpers.dialog.delete", id: subscription.id) }
+                ) %>
+          </td>
+        </tr>
+  <%- end %>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <%== pagy_bootstrap_nav(@pagy) %>
+    <%== pagy_limit_selector_js(@pagy, item_name: "Subscription".pluralize(@pagy.count), id: "pagy-limit-selector") %>
+    <%= link_to(
+          t("view.index.update_item_per_page", model: Subscription.model_name.human),
+          "javascript:void(0);",
+          onClick: "updateItemPerPage(arguments[0],
+          this)"
+        ) %>
+  </div>
+<% end %>
+  </main>
+</div>

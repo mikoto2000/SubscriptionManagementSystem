@@ -1,0 +1,87 @@
+<%= form_with(model: subscription, html: { class: %w[form-control form-control-sm] }) do |form| -%>
+  <%- if subscription.errors.any? -%>
+  <div style="color: red">
+    <h2><%= t("errors.template.header", model: Subscription.model_name.human, count: subscription.errors.count) %></h2>
+
+    <ul>
+    <% subscription.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <%- end -%>
+    </ul>
+  </div>
+  <%- end -%>
+
+  <%- if subscription.persisted? -%>
+  <div>
+    <%= form.label :id, style: "display: block" %>
+    <div class="ps-2">
+      <%= form.number_field :id, class: %w[form-control form-control-sm], disabled: true %>
+    </div>
+  </div>
+  <%- end -%>
+  <div>
+    <%= form.label Subscription.reflect_on_association(:publisher).foreign_key %>
+    <div class="ps-2">
+      <%= form.collection_select(
+            Subscription.reflect_on_association(:publisher).foreign_key,
+            Subscription.reflect_on_association(:publisher).klass.all,
+            :id,
+            :name,
+            { include_blank: "選択なし" }
+          ) %>
+    </div>
+  </div>
+  <div>
+    <%= form.label Subscription.reflect_on_association(:subscriber).foreign_key %>
+    <div class="ps-2">
+      <%= form.collection_select(
+            Subscription.reflect_on_association(:subscriber).foreign_key,
+            Subscription.reflect_on_association(:subscriber).klass.all,
+            :id,
+            :name,
+            { include_blank: "選択なし" }
+          ) %>
+    </div>
+  </div>
+  <div>
+    <%= form.label :start_date, style: "display: block" %>
+    <div class="ps-2">
+      <%= form.date_field :start_date, class: %w[form-control form-control-sm] %>
+    </div>
+  </div>
+  <div>
+    <%= form.label :end_date, style: "display: block" %>
+    <div class="ps-2">
+      <%= form.date_field :end_date, class: %w[form-control form-control-sm] %>
+    </div>
+  </div>
+  <div>
+    <%= form.label Subscription.reflect_on_association(:plan).foreign_key %>
+    <div class="ps-2">
+      <%= form.collection_select(
+            Subscription.reflect_on_association(:plan).foreign_key,
+            Subscription.reflect_on_association(:plan).klass.all,
+            :id,
+            :name,
+            { include_blank: "選択なし" }
+          ) %>
+    </div>
+  </div>
+  <%- if subscription.persisted? -%>
+  <div>
+    <%= form.label :created_at, style: "display: block" %>
+    <div class="ps-2">
+      <%= form.datetime_field :created_at, class: %w[form-control form-control-sm], disabled: true %>
+    </div>
+  </div>
+  <div>
+    <%= form.label :updated_at, style: "display: block" %>
+    <div class="ps-2">
+      <%= form.datetime_field :updated_at, class: %w[form-control form-control-sm], disabled: true %>
+    </div>
+  </div>
+  <%- end -%>
+  <div>
+    <%= form.submit class: %w[btn btn-primary] %>
+  </div>
+<% end %>

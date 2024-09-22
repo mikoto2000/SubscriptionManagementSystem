@@ -1,0 +1,82 @@
+<div id="<%= dom_id subscription %>">
+  <table class="table table-hover">
+    <tr>
+      <td>
+        <strong>Id:</strong>
+      </td>
+      <td>
+        <%= subscription.id %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscription.human_attribute_name(:publisher_id) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscription.publisher.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscription.human_attribute_name(:subscriber_id) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscription.subscriber.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscription.human_attribute_name(:start_date) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscription.start_date && l(subscription.start_date) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscription.human_attribute_name(:end_date) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscription.end_date && l(subscription.end_date) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscription.human_attribute_name(:plan_id) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscription.plan.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscription.human_attribute_name(:created_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscription.created_at && l(subscription.created_at) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Subscription.human_attribute_name(:updated_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= subscription.updated_at && l(subscription.updated_at) %>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<h1><%= Subscription.model_name.human %></h1>
+
+<%= render @subscription %>
+
+<div>
+  <%= link_to t("view.show.move_to_update", model: Subscription.model_name.human), edit_subscription_path(@subscription) %> |
+  <%= link_to t("view.show.move_to_index", model: Subscription.model_name.human.pluralize), subscriptions_path %>
+
+  <%= button_to t("helpers.submit.delete"),
+                @subscription,
+                method: :delete,
+                class: %w[btn btn-primary],
+                data: { turbo_confirm: t("helpers.dialog.delete", id: @subscription.id) } %>
+</div>
