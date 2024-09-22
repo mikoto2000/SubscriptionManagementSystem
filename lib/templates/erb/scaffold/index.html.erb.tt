@@ -47,7 +47,7 @@
             <%%= f.search_field :<%= attribute.name %>_eq, class: %w[form-control form-control-sm] %>
           </div>
         </div>
-      <%- elsif attribute.type.to_s == "integer" -%>
+      <%- elsif attribute.type.to_s == "integer" || attribute.type.to_s == "decimal" || attribute.type.to_s == "numeric" -%>
         <div>
           <%%= f.label :<%= attribute.name %> %>
           <div class="ps-2">

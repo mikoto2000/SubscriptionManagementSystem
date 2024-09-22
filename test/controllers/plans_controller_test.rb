@@ -3,6 +3,12 @@ require "test_helper"
 class PlansControllerTest < ActionDispatch::IntegrationTest
   setup do
     @plan = plans(:one)
+    publisher = publishers(:one);
+    @additional_plan = Plan.new({
+      :publisher => publisher,
+      :name => "additional_publisher",
+      :cost => 1.0
+    })
   end
 
   test "should get index" do
@@ -18,7 +24,7 @@ class PlansControllerTest < ActionDispatch::IntegrationTest
     assert_select "table > tbody > tr:nth-of-type(1) > td", text: @plan.id.to_s
   end
   test "should get index search publishers" do
-    search_ids = [plans(:one).publisher, plans(:two).publisher]
+    search_ids = [plans(:one).publisher_id, plans(:two).publisher_id]
     get plans_url, params: { q: { publisher_id_in: search_ids } }
     assert_response :success
 
@@ -36,33 +42,20 @@ class PlansControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index search name, multi hit" do
-    search_string = "o" # `o`ne, tw`o`, destr`o`y_target.
+    search_string = "o" # `o`ne, tw`o`.
     get plans_url, params: { q: { name_cont: search_string } }
     assert_response :success
 
-    assert_select "table > tbody > tr", count: 3
+    assert_select "table > tbody > tr", count: 2
     assert_select "table > tbody > tr > td:nth-of-type(3)", text: plans(:one).name # one
     assert_select "table > tbody > tr > td:nth-of-type(3)", text: plans(:two).name # two
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: plans(:destroy_target).name # destroy_target
   end
   test "should get index search cost" do
     search_string = @plan.cost
-    get plans_url, params: { q: { cost_cont: search_string } }
+    get plans_url, params: { q: { cost_eq: search_string } }
     assert_response :success
 
-    assert_select "table > tbody > tr", count: 1
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: search_string # one
-  end
-
-  test "should get index search cost, multi hit" do
-    search_string = "o" # `o`ne, tw`o`, destr`o`y_target.
-    get plans_url, params: { q: { cost_cont: search_string } }
-    assert_response :success
-
-    assert_select "table > tbody > tr", count: 3
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: plans(:one).name # one
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: plans(:two).name # two
-    assert_select "table > tbody > tr > td:nth-of-type(4)", text: plans(:destroy_target).name # destroy_target
+    assert_select "table > tbody > tr", count: 4
   end
 
   test "should get index search created_at single hit" do
@@ -125,7 +118,7 @@ class PlansControllerTest < ActionDispatch::IntegrationTest
   test "should create plan" do
     assert_difference("Plan.count") do
       post plans_url, params: { plan:
-        { cost: @plan.cost, name: @plan.name, publisher_id: @plan.publisher_id }
+        { cost: @additional_plan.cost, name: @additional_plan.name, publisher_id: @additional_plan.publisher_id }
        }
     end
 
