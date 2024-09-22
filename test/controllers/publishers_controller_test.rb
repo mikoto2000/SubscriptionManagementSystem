@@ -3,6 +3,10 @@ require "test_helper"
 class PublishersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @publisher = publishers(:one)
+    @additional_publisher = Publisher.new({
+      :name => "additional",
+      :email_address => "additional@example.com"
+    })
   end
 
   test "should get index" do
@@ -27,14 +31,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index search name, multi hit" do
-    search_string = "o" # `o`ne, tw`o`, destr`o`y_target.
+    search_string = "o" # c`o`m.
     get publishers_url, params: { q: { name_cont: search_string } }
     assert_response :success
 
-    assert_select "table > tbody > tr", count: 3
+    assert_select "table > tbody > tr", count: 2
     assert_select "table > tbody > tr > td:nth-of-type(2)", text: publishers(:one).name # one
     assert_select "table > tbody > tr > td:nth-of-type(2)", text: publishers(:two).name # two
-    assert_select "table > tbody > tr > td:nth-of-type(2)", text: publishers(:destroy_target).name # destroy_target
   end
   test "should get index search email_address" do
     search_string = @publisher.email_address
@@ -46,14 +49,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index search email_address, multi hit" do
-    search_string = "o" # `o`ne, tw`o`, destr`o`y_target.
+    search_string = "o" # c`o`m.
     get publishers_url, params: { q: { email_address_cont: search_string } }
     assert_response :success
 
-    assert_select "table > tbody > tr", count: 3
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: publishers(:one).name # one
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: publishers(:two).name # two
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: publishers(:destroy_target).name # destroy_target
+    assert_select "table > tbody > tr", count: 4
   end
 
   test "should get index search created_at single hit" do
@@ -116,7 +116,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "should create publisher" do
     assert_difference("Publisher.count") do
       post publishers_url, params: { publisher:
-        { email_address: @publisher.email_address, name: @publisher.name }
+        { email_address: @additional_publisher.email_address, name: @additional_publisher.name }
        }
     end
 

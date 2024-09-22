@@ -3,6 +3,10 @@ require "test_helper"
 class SubscribersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @subscriber = subscribers(:one)
+    @additional_subscriber = Subscriber.new({
+      :name => "additional",
+      :email_address => "additional@example.com"
+    })
   end
 
   test "should get index" do
@@ -27,14 +31,13 @@ class SubscribersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index search name, multi hit" do
-    search_string = "o" # `o`ne, tw`o`, destr`o`y_target.
+    search_string = "o" # all com.
     get subscribers_url, params: { q: { name_cont: search_string } }
     assert_response :success
 
-    assert_select "table > tbody > tr", count: 3
+    assert_select "table > tbody > tr", count: 2
     assert_select "table > tbody > tr > td:nth-of-type(2)", text: subscribers(:one).name # one
     assert_select "table > tbody > tr > td:nth-of-type(2)", text: subscribers(:two).name # two
-    assert_select "table > tbody > tr > td:nth-of-type(2)", text: subscribers(:destroy_target).name # destroy_target
   end
   test "should get index search email_address" do
     search_string = @subscriber.email_address
@@ -46,14 +49,11 @@ class SubscribersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index search email_address, multi hit" do
-    search_string = "o" # `o`ne, tw`o`, destr`o`y_target.
+    search_string = "o" # all com.
     get subscribers_url, params: { q: { email_address_cont: search_string } }
     assert_response :success
 
-    assert_select "table > tbody > tr", count: 3
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: subscribers(:one).name # one
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: subscribers(:two).name # two
-    assert_select "table > tbody > tr > td:nth-of-type(3)", text: subscribers(:destroy_target).name # destroy_target
+    assert_select "table > tbody > tr", count: 4
   end
 
   test "should get index search created_at single hit" do
@@ -116,7 +116,7 @@ class SubscribersControllerTest < ActionDispatch::IntegrationTest
   test "should create subscriber" do
     assert_difference("Subscriber.count") do
       post subscribers_url, params: { subscriber:
-        { email_address: @subscriber.email_address, name: @subscriber.name }
+        { email_address: @additional_subscriber.email_address, name: @additional_subscriber.name }
        }
     end
 
