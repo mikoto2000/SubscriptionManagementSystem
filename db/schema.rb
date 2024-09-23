@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_22_071417) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_22_123122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,5 +50,21 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_071417) do
     t.index ["email_address"], name: "index_subscribers_on_email_address", unique: true
   end
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "publisher_id", null: false
+    t.bigint "subscriber_id", null: false
+    t.date "start_date", null: false
+    t.date "end_date"
+    t.bigint "plan_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_id"], name: "index_subscriptions_on_plan_id"
+    t.index ["publisher_id"], name: "index_subscriptions_on_publisher_id"
+    t.index ["subscriber_id"], name: "index_subscriptions_on_subscriber_id"
+  end
+
   add_foreign_key "plans", "publishers"
+  add_foreign_key "subscriptions", "plans"
+  add_foreign_key "subscriptions", "publishers"
+  add_foreign_key "subscriptions", "subscribers"
 end
