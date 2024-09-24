@@ -1,3 +1,7 @@
+<% content_for :js do %>
+  <%= javascript_import_module_tag "subscriptions/new" %>
+<% end %>
+
 <h1><%= t("view.new.title", model: Subscription.model_name.human) %></h1>
 <%= render "form", subscription: @subscription %>
 

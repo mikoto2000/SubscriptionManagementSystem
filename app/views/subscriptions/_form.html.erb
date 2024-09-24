@@ -27,7 +27,8 @@
             Subscription.reflect_on_association(:publisher).klass.all,
             :id,
             :name,
-            { include_blank: "選択なし" }
+            { include_blank: "選択なし" },
+            { id: "publisher-selector" }
           ) %>
     </div>
   </div>
@@ -63,7 +64,8 @@
             Subscription.reflect_on_association(:plan).klass.all,
             :id,
             :name,
-            { include_blank: "選択なし" }
+            { include_blank: "選択なし" },
+            { id: "plan-selector" }
           ) %>
     </div>
   </div>
