@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :publisher_payments
   resources :payment_statuses
   resources :subscriptions
   resources :plans
