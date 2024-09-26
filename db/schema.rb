@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_075413) do
   end
 
   create_table "payments", force: :cascade do |t|
+    t.string "type"
     t.date "month_for_payment"
     t.date "payment_date"
     t.bigint "payment_status_id", null: false
