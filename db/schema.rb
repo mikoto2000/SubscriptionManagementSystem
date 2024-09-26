@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_22_123122) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_26_075413) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,25 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_123122) do
     t.datetime "updated_at", null: false
 
     t.exclusion_constraint "daterange(from_date, to_date, '[]'::text) WITH &&", using: :gist, name: "exclude_overlapping_commission_masters"
+  end
+
+  create_table "payment_statuses", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.date "month_for_payment"
+    t.date "payment_date"
+    t.bigint "payment_status_id", null: false
+    t.bigint "publisher_id"
+    t.bigint "subscriber_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payment_status_id"], name: "index_payments_on_payment_status_id"
+    t.index ["publisher_id"], name: "index_payments_on_publisher_id"
+    t.index ["subscriber_id"], name: "index_payments_on_subscriber_id"
   end
 
   create_table "plans", force: :cascade do |t|
@@ -63,6 +82,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_123122) do
     t.index ["subscriber_id"], name: "index_subscriptions_on_subscriber_id"
   end
 
+  add_foreign_key "payments", "payment_statuses"
+  add_foreign_key "payments", "publishers"
+  add_foreign_key "payments", "subscribers"
   add_foreign_key "plans", "publishers"
   add_foreign_key "subscriptions", "plans"
   add_foreign_key "subscriptions", "publishers"
