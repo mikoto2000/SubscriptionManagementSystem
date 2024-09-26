@@ -1,0 +1,9 @@
+<h1><%= t("view.edit.title", model: SubscriberPayment.model_name.human) %></h1>
+<%= render "form", subscriber_payment: @subscriber_payment %>
+
+<br>
+
+<div>
+  <%= link_to t("view.edit.move_to_show", model: SubscriberPayment.model_name.human), @subscriber_payment %> |
+  <%= link_to t("view.edit.move_to_index", model: SubscriberPayment.model_name.human.pluralize), subscriber_payments_path %>
+</div>
