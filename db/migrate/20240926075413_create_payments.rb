@@ -5,8 +5,8 @@ class CreatePayments < ActiveRecord::Migration[7.2]
       t.date :month_for_payment
       t.date :payment_date
       t.references :payment_status, null: false, foreign_key: true
-      t.references :publisher, null: false, foreign_key: true
-      t.references :subscriber, null: false, foreign_key: true
+      t.references :publisher, null: true, foreign_key: true
+      t.references :subscriber, null: true, foreign_key: true
 
       t.timestamps
     end
