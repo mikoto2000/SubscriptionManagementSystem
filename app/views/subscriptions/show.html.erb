@@ -1,3 +1,7 @@
+<% content_for :js do %>
+  <%= javascript_import_module_tag "subscriptions/new" %>
+<% end %>
+
 <p style="color: green"><%= notice %></p>
 
 <h1><%= Subscription.model_name.human %></h1>

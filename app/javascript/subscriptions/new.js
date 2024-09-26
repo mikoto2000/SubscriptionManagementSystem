@@ -1,6 +1,9 @@
-document.addEventListener("DOMContentLoaded", async (event) => {
+document.addEventListener("turbo:load", async (event) => {
 
   const publisherSelector = document.getElementById("publisher-selector");
+  if (!publisherSelector) {
+    return;
+  }
 
   publisherSelector.addEventListener("change", (event) => {
     console.log("👺: KITAYO");
