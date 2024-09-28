@@ -3,15 +3,11 @@
 entity Publisher {
   *id
   --
-  * name
-  * email_address
 }
 
 entity Subscriber {
   * id
   --
-  * name
-  * email_address
 }
 
 entity Subscription {
@@ -35,14 +31,20 @@ entity Plan {
 entity Payment {
   * id
   --
-  month_for_payment: date
-  payment_date: date
-  payment_status: (FK: payment_status(id))
-  publisher_id (FK:publisher(id)
-  subscriber_id (FK:subscriber(id)
+  * month_for_payment: date
+    payment_date: date
+  * payment_status: (FK: payment_status(id))
+  * account_id (FK:account(id))
 }
 
-note right: Single Table Inhelitance で、\npublisher からの支払いと\nsubscriber からの支払いを扱う
+entity Account {
+  * id
+  --
+  * name
+  * email_address
+  * publisher_id (FK:publisher(id)
+  * subscriber_id (FK:subscriber(id)
+}
 
 entity PaymentStatus {
   * id
@@ -50,20 +52,25 @@ entity PaymentStatus {
   * name
 }
 
+note right: 1:支払い未済\n2:支払い済
+
 entity CommissionMaster {
   from: date
   to: date
   commission_fee: decimal
 }
 
-note right: from から to までの手数料。publisher は、\nサブスクリプションの x % をシステムに支払う。
+note left: from から to までの手数料。publisher は、\nサブスクリプションの x % をシステムに支払う。
 
 Publisher }o-|| Subscription
 Subscription ||-o{ Subscriber
 Subscription }o--|| Plan
-PaymentStatus ||--o{ Payment 
+PaymentStatus ||--o{ Payment
 
-Payment }o--|| Publisher
-Payment }o--|| Subscriber
+Account }o--|| Publisher
+Account }o--|| Subscriber
+
+Payment }o--|| Account
 
 @enduml
+
