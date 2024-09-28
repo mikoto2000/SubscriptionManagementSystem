@@ -1,1 +1,6 @@
 <h1>Top page</h1>
+
+<ul>
+  <li><%= link_to "アカウントページ", "/account" %></li>
+  <li><%= link_to "ログアウト", destroy_account_session_path, data: { turbo_method: :delete } %></li>
+</ul>
