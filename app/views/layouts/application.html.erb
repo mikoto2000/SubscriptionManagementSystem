@@ -19,8 +19,14 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% if current_account then %><%= link_to current_account.name, edit_account_registration_path(current_account), class: "user-name" %>
+      <p>
+      publisher_id: <%= current_account.publisher_id %>, 
+      subscriber_id: <%= current_account.subscriber_id %>
+      </p>
+    <% end %>
+    <% if notice then %><p class="notice"><%= notice %></p><% end %>
+    <% if alert then %><p class="alert"><%= alert %></p><% end %>
     <%= yield %>
   </body>
 </html>

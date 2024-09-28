@@ -14,5 +14,6 @@ devices 導入
     - 表示されたガイドに従う
 4. `./bin/rails generate devise:install`
 5. `./bin/rails generate devise:views`
-
+6. `./bin/rails generate devise:controllers account`
+7. `./bin/rails generate devise Account name:string publisher:references subscriber:references`
 

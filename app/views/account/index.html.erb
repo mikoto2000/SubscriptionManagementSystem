@@ -1,0 +1,14 @@
+提供プラン
+
+<ul>
+<% @publish_plans.each do |plan| %>
+  <li><%= plan.name %></li>
+<% end %>
+</ul>
+
+購読プラン
+<ul>
+<% @subscribe_plans.each do |plan| %>
+  <li><%= plan.name %></li>
+<% end %>
+</ul>
