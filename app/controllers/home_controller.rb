@@ -1,9 +1,8 @@
 class HomeController < ApplicationController
   def index
-    @account = current_account
-    @publish_plans = Plan.where(publisher_id: @account.publisher_id)
+    @publish_plans = Plan.where(publisher_id: current_account.publisher_id)
     subscriptions = Subscription
-      .where(subscriber_id: @account.subscriber_id)
+      .where(subscriber_id: current_account.subscriber_id)
       .eager_load(:plan)
     @subscribe_plans = subscriptions.map {|subscription|
       subscription.plan
