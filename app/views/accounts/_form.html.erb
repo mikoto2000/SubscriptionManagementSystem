@@ -1,0 +1,13 @@
+<% @plans.each do |plan| %>
+  <li>
+    <%= plan.name %> : <%= plan.cost %> 円/月
+  <%= form_with(model: Subscription.new, url: subscriptions_path, local: true, :html => { :style => "display: inline;" }, data: { turbo_confirm: "#{plan.name} を購読しますか？"} ) do |f| %>
+    <%= f.hidden_field :publisher_id, value: @account.publisher_id %>
+    <%= f.hidden_field :subscriber_id, value: current_account.subscriber_id %>
+    <%= f.hidden_field :start_date, value: Time.zone.today %>
+    <%= f.hidden_field :plan_id, value: plan.id %>
+    <%= f.submit '購読' %>
+<% end %>
+  </li>
+<% end %>
+
