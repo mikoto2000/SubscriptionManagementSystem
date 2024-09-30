@@ -1,0 +1,10 @@
+<h1><%= @account.name %></h1>
+
+提供プラン
+
+<ul>
+<% @plans.each do |plan| %>
+  <li><%= plan.name %></li>
+<% end %>
+</ul>
+

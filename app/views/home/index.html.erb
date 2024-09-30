@@ -1,6 +1,21 @@
-<h1>Top page</h1>
+<h1><%= @account.name %></h1>
+
+提供プラン
 
 <ul>
-  <li><%= link_to "アカウントページ", "/account" %></li>
+<% @publish_plans.each do |plan| %>
+  <li><%= plan.name %></li>
+<% end %>
+</ul>
+
+購読プラン
+<ul>
+<% @subscribe_plans.each do |plan| %>
+  <li><%= plan.publisher.name %> : <%= plan.name %></li>
+<% end %>
+</ul>
+
+<ul>
+  <li><%= link_to "アカウントを探す", accounts_path %></li>
   <li><%= link_to "ログアウト", destroy_account_session_path, data: { turbo_method: :delete } %></li>
 </ul>

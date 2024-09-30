@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :accounts
 
-  resources :account
+  resources :accounts
   resources :subscriber_payments
   resources :publisher_payments
   resources :payment_statuses

@@ -1,0 +1,7 @@
+アカウント一覧
+
+<ul>
+<% @accounts.each do |account| %>
+  <li><%= link_to account.name, account_path(account.id) %></li>
+<% end %>
+</ul>
