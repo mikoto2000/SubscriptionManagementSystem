@@ -31,6 +31,7 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.new(subscription_params)
 
     if @subscription.save
+      # TODO: ちゃんとリクエスト画面がわかるパラメーターを追加する
       if params[:commit] == "作成"
         redirect_to @subscription, notice: t("controller.create.success", model: Subscription.model_name.human)
       else
@@ -44,7 +45,12 @@ class SubscriptionsController < ApplicationController
   # PATCH/PUT /subscriptions/1
   def update
     if @subscription.update(subscription_params)
-      redirect_to @subscription, notice: t("controller.edit.success", model: Subscription.model_name.human)
+      # TODO: ちゃんとリクエスト画面がわかるパラメーターを追加する
+      if params[:commit] == "更新"
+        redirect_to @subscription, notice: t("controller.edit.success", model: Subscription.model_name.human)
+      else
+        redirect_to home_path, notice: t("controller.edit.success", model: Subscription.model_name.human)
+      end
     else
       render :edit, status: :unprocessable_entity
     end
