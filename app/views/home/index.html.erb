@@ -10,8 +10,26 @@
 
 購読プラン
 <ul>
-<% @subscribe_plans.each do |plan| %>
-  <li><%= plan.publisher.name %> : <%= plan.name %></li>
+<% @subscribe_subscriptions.each do |subscription| %>
+  <li><%= subscription.plan.publisher.name %> : <%= subscription.plan.name %>
+    <% if subscription.end_date == Time.zone.today %>
+      (本日購読解除予定)
+    <% else %>
+      <%= form_with(
+        model: Subscription.new,
+        url: subscription_path(subscription.id),
+        method: :put,
+        local: true,
+        :html => {
+          :style => "display: inline;"
+        },
+        data: { turbo_confirm: "#{subscription.plan.name} の購読を解除しますか？"} ) do |f| %>
+        <%= f.hidden_field :plan_id, value: subscription.plan.id %>
+        <%= f.hidden_field :end_date, value: Time.zone.today %>
+        <%= f.submit '購読解除' %>
+      <% end %>
+    <% end %>
+  </li>
 <% end %>
 </ul>
 

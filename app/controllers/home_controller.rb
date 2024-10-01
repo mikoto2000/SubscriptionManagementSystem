@@ -1,11 +1,10 @@
 class HomeController < ApplicationController
   def index
     @publish_plans = Plan.where(publisher_id: current_account.publisher_id)
-    subscriptions = Subscription
+    @subscribe_subscriptions = Subscription
       .where(subscriber_id: current_account.subscriber_id)
+      .where("end_date >= ?", Time.zone.today)
+      .or(Subscription.where(end_date: nil))
       .eager_load(:plan)
-    @subscribe_plans = subscriptions.map {|subscription|
-      subscription.plan
-    }
   end
 end
