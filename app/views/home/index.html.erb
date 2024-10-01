@@ -14,6 +14,19 @@
   <li><%= subscription.plan.publisher.name %> : <%= subscription.plan.name %>
     <% if subscription.end_date == Time.zone.today %>
       (本日購読解除予定)
+      <%= form_with(
+        model: Subscription.new,
+        url: subscription_path(subscription.id),
+        method: :put,
+        local: true,
+        :html => {
+          :style => "display: inline;"
+        },
+        data: { turbo_confirm: "#{subscription.plan.name} の購読解除をキャンセルしますか？"} ) do |f| %>
+        <%= f.hidden_field :plan_id, value: subscription.plan.id %>
+        <%= f.hidden_field :end_date, value: nil %>
+        <%= f.submit 'キャンセル' %>
+      <% end %>
     <% else %>
       <%= form_with(
         model: Subscription.new,
