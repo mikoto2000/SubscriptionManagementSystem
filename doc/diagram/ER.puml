@@ -1,5 +1,15 @@
 @startuml
 
+entity Publisher {
+  *id
+  --
+}
+
+entity Subscriber {
+  * id
+  --
+}
+
 entity Subscription {
   * id
   --
@@ -7,7 +17,7 @@ entity Subscription {
   * subscriver_id (FK:subscriver(id))
   * start_date: date
     end_date: date
-  * plan_id (FK:plan(id))
+    plan_id (FK:plan(id))
 }
 
 entity Plan {
@@ -32,8 +42,8 @@ entity Account {
   --
   * name
   * email_address
-  * publisher_id
-  * subscriber_id
+  * publisher_id (FK:publisher(id)
+  * subscriber_id (FK:subscriber(id)
 }
 
 entity PaymentStatus {
@@ -52,10 +62,13 @@ entity CommissionMaster {
 
 note left: from から to までの手数料。publisher は、\nサブスクリプションの x % をシステムに支払う。
 
-Subscription }o--|| Account
-Account ||--o{ Subscription
+Publisher }o-|| Subscription
+Subscription ||-o{ Subscriber
 Subscription }o--|| Plan
 PaymentStatus ||--o{ Payment
+
+Account }o--|| Publisher
+Account }o--|| Subscriber
 
 Payment }o--|| Account
 
