@@ -7,4 +7,8 @@ class HomeController < ApplicationController
       .or(Subscription.where(end_date: nil))
       .eager_load(:plan)
   end
+
+  def create_plan
+    @publish_plans = Plan.where(publisher_id: current_account.publisher_id)
+  end
 end

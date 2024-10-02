@@ -1,0 +1,31 @@
+
+<h1><%= current_account.name %></h1>
+
+提供プラン追加
+
+<%= form_with(
+  model: Plan.new,
+  url: plans_path,
+  method: :post,
+  local: true,
+  data: { turbo_confirm: "プラン提供を開始しますか？"} ) do |f| %>
+  <div>
+  <%= f.label "プラン名" %>
+  <%= f.text_field :name %>
+  </div>
+  <div>
+  <%= f.label "料金" %>
+  <%= f.number_field :cost %>
+  </div>
+  <%= f.hidden_field :publisher_id, value: current_account.publisher_id %>
+  <%= f.submit '提供開始' %>
+<% end %>
+
+提供中プラン
+
+<ul>
+<% @publish_plans.each do |plan| %>
+  <li><%= plan.name %> : <%= plan.cost %> 円/月</li>
+<% end %>
+</ul>
+
