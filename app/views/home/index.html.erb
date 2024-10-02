@@ -11,7 +11,7 @@
 <h2><%= I18n.l(Time.zone.today) %> 購読プラン</h2>
 <ul>
 <% @subscribe_subscriptions.each do |subscription| %>
-  <li><%= subscription.plan.publisher.name %> : <%= subscription.plan.name %>
+  <li><%= subscription.publisher.account.name %> : <%= subscription.plan.name %>
     <% if subscription.end_date && subscription.end_date >= Time.zone.today.beginning_of_month %>
       (購読解除済み)
       <%= form_with(

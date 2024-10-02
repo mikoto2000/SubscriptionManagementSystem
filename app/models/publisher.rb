@@ -5,6 +5,9 @@ class Publisher < ApplicationRecord
 
   before_save { self.email_address = email_address.downcase }
 
+  has_one :account
+  has_one :subscription
+
   validates :name, presence: true
   validates :email_address,
     presence: true,

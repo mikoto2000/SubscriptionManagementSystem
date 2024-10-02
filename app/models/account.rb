@@ -13,8 +13,8 @@ class Account < ApplicationRecord
 
     def create_pubsub
       puts "👺KITAYO"
-      publisher = Publisher.create({:name => self.name, :email_address => self.email})
-      subscriber = Subscriber.create({:name => self.name, :email_address => self.email})
+      publisher = Publisher.create()
+      subscriber = Subscriber.create()
       self.publisher_id = publisher.id
       self.subscriber_id = subscriber.id
     end
