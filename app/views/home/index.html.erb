@@ -1,6 +1,6 @@
 <h1><%= current_account.name %></h1>
 
-提供プラン
+<h2>提供プラン</h2>
 
 <ul>
 <% @publish_plans.each do |plan| %>
@@ -8,12 +8,12 @@
 <% end %>
 </ul>
 
-購読プラン
+<h2><%= I18n.l(Time.zone.today) %> 購読プラン</h2>
 <ul>
 <% @subscribe_subscriptions.each do |subscription| %>
   <li><%= subscription.plan.publisher.name %> : <%= subscription.plan.name %>
-    <% if subscription.end_date == Time.zone.today %>
-      (本日購読解除予定)
+    <% if subscription.end_date && subscription.end_date >= Time.zone.today.beginning_of_month %>
+      (購読解除済み)
       <%= form_with(
         model: Subscription.new,
         url: subscription_path(subscription.id),
@@ -46,3 +46,6 @@
 <% end %>
 </ul>
 
+<h2>課金額合計</h2>
+
+<%= @subscribe_subscriptions.map { |s| s.plan.cost }.sum %>
