@@ -19,18 +19,6 @@
     </div>
   </div>
   <%- end -%>
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <div class="ps-2">
-      <%= form.text_field :name, class: %w[form-control form-control-sm] %>
-    </div>
-  </div>
-  <div>
-    <%= form.label :email_address, style: "display: block" %>
-    <div class="ps-2">
-      <%= form.text_field :email_address, class: %w[form-control form-control-sm] %>
-    </div>
-  </div>
   <%- if subscriber.persisted? -%>
   <div>
     <%= form.label :created_at, style: "display: block" %>

@@ -25,18 +25,6 @@
           </div>
         </div>
         <div>
-          <%= f.label :name_cont %>
-          <div class="ps-2">
-            <%= f.search_field :name_cont, class: %w[form-control form-control-sm] %>
-          </div>
-        </div>
-        <div>
-          <%= f.label :email_address_cont %>
-          <div class="ps-2">
-            <%= f.search_field :email_address_cont, class: %w[form-control form-control-sm] %>
-          </div>
-        </div>
-        <div>
           <%= f.label :created_at %>
           <div class="ps-2">
             <%= f.datetime_field :created_at_gteq, class: %w[form-control form-control-sm] %>
@@ -70,8 +58,6 @@
     <table class="table table-hover text-nowrap">
       <thead class="table-light sticky-top">
         <th><%= sort_link(@q, :id, default_order: :asc, class: "d-block") %></th>
-        <th><%= sort_link(@q, :name, default_order: :asc, class: "d-block") %></th>
-        <th><%= sort_link(@q, :email_address, default_order: :asc, class: "d-block") %></th>
         <th><%= sort_link(@q, :created_at, default_order: :asc, class: "d-block") %></th>
         <th><%= sort_link(@q, :updated_at, default_order: :asc, class: "d-block") %></th>
         <th><%= t("view.index.operation") %></th>
@@ -84,8 +70,6 @@
           onkeypress="handleEnterKeypressListIten(arguments[0], this, '<%= url_target(nil, publisher).to_s %>')"
           onclick="handleClickListItem(arguments[0], this, '<%= url_target(nil, publisher).to_s %>')">
           <td><%= publisher.id %></td>
-          <td><%= publisher.name %></td>
-          <td><%= publisher.email_address %></td>
           <td><%= publisher.created_at && l(publisher.created_at) %></td>
           <td><%= publisher.updated_at && l(publisher.updated_at) %></td>
           <td>
