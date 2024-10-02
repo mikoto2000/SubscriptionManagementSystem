@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<h1><%= PlanStatus.model_name.human %></h1>
+
+<%= render @plan_status %>
+
+<div>
+  <%= link_to t("view.show.move_to_update", model: PlanStatus.model_name.human), edit_plan_status_path(@plan_status) %> |
+  <%= link_to t("view.show.move_to_index", model: PlanStatus.model_name.human.pluralize), plan_statuses_path %>
+
+  <%= button_to t("helpers.submit.delete"),
+                @plan_status,
+                method: :delete,
+                class: %w[btn btn-primary],
+                data: { turbo_confirm: t("helpers.dialog.delete", id: @plan_status.id) } %>
+</div>

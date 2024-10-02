@@ -9,12 +9,13 @@ class Account < ApplicationRecord
     %w[id created_at updated_at]
   end
 
+  validates :name, presence: true
+
   private
 
     def create_pubsub
-      puts "👺KITAYO"
-      publisher = Publisher.create()
-      subscriber = Subscriber.create()
+      publisher = Publisher.create({})
+      subscriber = Subscriber.create({})
       self.publisher_id = publisher.id
       self.subscriber_id = subscriber.id
     end

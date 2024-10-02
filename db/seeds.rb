@@ -19,3 +19,12 @@ PaymentStatus.create([
     name: "未払い",
   }
 ])
+
+PlanStatus.create([
+  {
+    name: "公開",
+  },
+  {
+    name: "非公開",
+  }
+])

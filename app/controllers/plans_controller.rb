@@ -29,7 +29,12 @@ class PlansController < ApplicationController
     @plan = Plan.new(plan_params)
 
     if @plan.save
-      redirect_to @plan, notice: t("controller.create.success", model: Plan.model_name.human)
+      # TODO: ちゃんとリクエスト画面がわかるパラメーターを追加する
+      if params[:commit] == "作成"
+        redirect_to @plan, notice: t("controller.create.success", model: Plan.model_name.human)
+      else
+        redirect_to root_path, notice: t("controller.edit.success", model: Plan.model_name.human)
+      end
     else
       render :new, status: :unprocessable_entity
     end

@@ -49,7 +49,7 @@ class SubscriptionsController < ApplicationController
       if params[:commit] == "更新"
         redirect_to @subscription, notice: t("controller.edit.success", model: Subscription.model_name.human)
       else
-        redirect_to root_path, notice: t("controller.edit.success", model: Subscription.model_name.human)
+        redirect_to home_create_plan_path, notice: t("controller.edit.success", model: Subscription.model_name.human)
       end
     else
       render :edit, status: :unprocessable_entity

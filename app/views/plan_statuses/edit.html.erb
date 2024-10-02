@@ -1,0 +1,9 @@
+<h1><%= t("view.edit.title", model: PlanStatus.model_name.human) %></h1>
+<%= render "form", plan_status: @plan_status %>
+
+<br>
+
+<div>
+  <%= link_to t("view.edit.move_to_show", model: PlanStatus.model_name.human), @plan_status %> |
+  <%= link_to t("view.edit.move_to_index", model: PlanStatus.model_name.human.pluralize), plan_statuses_path %>
+</div>

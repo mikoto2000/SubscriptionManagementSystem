@@ -1,6 +1,5 @@
 class PublishersController < ApplicationController
   include Pagy::Backend
-  before_action :set_publisher, only: %i[show edit update destroy]
 
   # GET /publishers
   def index
