@@ -7,3 +7,15 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+PaymentStatus.create([
+  {
+    name: "課金期間中",
+  },
+  {
+    name: "支払済",
+  },
+  {
+    name: "未払い",
+  }
+])
