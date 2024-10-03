@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<h1><%= Payment.model_name.human %></h1>
+
+<%= render @payment %>
+
+<div>
+  <%= link_to t("view.show.move_to_update", model: Payment.model_name.human), edit_payment_path(@payment) %> |
+  <%= link_to t("view.show.move_to_index", model: Payment.model_name.human.pluralize), payments_path %>
+
+  <%= button_to t("helpers.submit.delete"),
+                @payment,
+                method: :delete,
+                class: %w[btn btn-primary],
+                data: { turbo_confirm: t("helpers.dialog.delete", id: @payment.id) } %>
+</div>

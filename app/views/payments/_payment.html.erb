@@ -1,0 +1,82 @@
+<div id="<%= dom_id payment %>">
+  <table class="table table-hover">
+    <tr>
+      <td>
+        <strong>Id:</strong>
+      </td>
+      <td>
+        <%= payment.id %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:year) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.year %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:month) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.month %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:payment_date) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.payment_date && l(payment.payment_date) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:payment_status_id) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.payment_status.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:account_id) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.account.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:created_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.created_at && l(payment.created_at) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:updated_at) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.updated_at && l(payment.updated_at) %>
+      </td>
+    </tr>
+  </table>
+</div>
