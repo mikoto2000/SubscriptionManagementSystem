@@ -29,9 +29,9 @@
           <div class="ps-2">
             <%= f.collection_select(
                   Plan.reflect_on_association(:publisher).foreign_key + "_in".to_s,
-                  Plan.reflect_on_association(:publisher).klass.all,
-                  :id,
-                  :name,
+                  Plan.reflect_on_association(:publisher).klass.all.map {|e| [e.id, e.account.name]},
+                  :first,
+                  :last,
                   {},
                   { multiple: true }
                 ) %>
@@ -98,7 +98,7 @@
           onkeypress="handleEnterKeypressListIten(arguments[0], this, '<%= url_target(nil, plan).to_s %>')"
           onclick="handleClickListItem(arguments[0], this, '<%= url_target(nil, plan).to_s %>')">
           <td><%= plan.id %></td>
-          <td><%= plan.publisher.name %></td>
+          <td><%= plan.publisher.account.name %></td>
           <td><%= plan.name %></td>
           <td><%= plan.cost %></td>
           <td><%= plan.created_at && l(plan.created_at) %></td>
