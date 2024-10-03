@@ -10,7 +10,7 @@ class Payment < ApplicationRecord
   def all_subscription_plan
     Payment.all
       .eager_load(account: { subscriber: { subscription: :plan }})
-      .find(self.account_id)
+      .find(self.account.subscriber_id)
       .account
       .subscriber
       .subscription.map {|e|
@@ -23,6 +23,32 @@ class Payment < ApplicationRecord
         e.cost
       }
       .sum
+  end
+
+  def all_publish_plan
+    Payment.all
+      .eager_load(account: { publisher: { subscription: :plan }})
+      .find(self.account.publisher_id)
+      .account
+      .publisher
+      .subscription.map {|e|
+        e.plan
+      }
+  end
+
+  def all_publish_cost
+    all_publish_plan.map {|e|
+        e.cost
+      }
+      .sum
+  end
+
+  def all_publish_fee
+    all_publish_plan.map {|e|
+        e.cost
+      }
+      # TODO: 期間で絞る
+      .sum * CommissionMaster.find(1).commission_fee
   end
 
   validates :year, presence: true
