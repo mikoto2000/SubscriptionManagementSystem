@@ -4,5 +4,5 @@ class Publisher < ApplicationRecord
   end
 
   has_one :account
-  has_one :subscription
+  has_many :subscription
 end

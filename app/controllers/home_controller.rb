@@ -4,7 +4,10 @@ class HomeController < ApplicationController
     @subscribe_subscriptions = Subscription
       .where(subscriber_id: current_account.subscriber_id)
       .where("end_date >= ?", Time.zone.today.beginning_of_month)
-      .or(Subscription.where(end_date: nil))
+      .or(
+        Subscription.where(subscriber_id: current_account.subscriber_id)
+        .where(end_date: nil)
+      )
       .eager_load(:plan)
   end
 

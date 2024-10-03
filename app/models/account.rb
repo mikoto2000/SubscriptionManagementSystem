@@ -11,6 +11,9 @@ class Account < ApplicationRecord
 
   validates :name, presence: true
 
+  belongs_to :publisher
+  belongs_to :subscriber
+
   private
 
     def create_pubsub
