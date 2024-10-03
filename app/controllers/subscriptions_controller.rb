@@ -69,6 +69,7 @@ class SubscriptionsController < ApplicationController
       @subscription = Subscription
         .eager_load(:publisher)
         .eager_load(:subscriber)
+        .eager_load(:account)
         .eager_load(:plan)
         .find(params[:id])
     end

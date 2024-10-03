@@ -34,9 +34,9 @@
           <div class="ps-2">
             <%= f.collection_select(
                   Subscription.reflect_on_association(:publisher).foreign_key + "_in".to_s,
-                  Subscription.reflect_on_association(:publisher).klass.all,
-                  :id,
-                  :name,
+                  Subscription.reflect_on_association(:publisher).klass.all.map {|e| [e.id, e.account.name]},
+                  :first,
+                  :last,
                   {},
                   { multiple: true }
                 ) %>
@@ -47,9 +47,9 @@
           <div class="ps-2">
             <%= f.collection_select(
                   Subscription.reflect_on_association(:subscriber).foreign_key + "_in".to_s,
-                  Subscription.reflect_on_association(:subscriber).klass.all,
-                  :id,
-                  :name,
+                  Subscription.reflect_on_association(:subscriber).klass.all.map {|e| [e.id, e.account.name]},
+                  :first,
+                  :last,
                   {},
                   { multiple: true }
                 ) %>
@@ -135,8 +135,8 @@
           onkeypress="handleEnterKeypressListIten(arguments[0], this, '<%= url_target(nil, subscription).to_s %>')"
           onclick="handleClickListItem(arguments[0], this, '<%= url_target(nil, subscription).to_s %>')">
           <td><%= subscription.id %></td>
-          <td><%= subscription.publisher.name %></td>
-          <td><%= subscription.subscriber.name %></td>
+          <td><%= subscription.publisher.account.name %></td>
+          <td><%= subscription.subscriber.account.name %></td>
           <td><%= subscription.start_date && l(subscription.start_date) %></td>
           <td><%= subscription.end_date && l(subscription.end_date) %></td>
           <td><%= subscription.plan.name %></td>
