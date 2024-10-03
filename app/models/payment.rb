@@ -7,44 +7,62 @@ class Payment < ApplicationRecord
     %w[year month payment_date payment_status_id publisher_id subscriber_id id created_at updated_at account]
   end
 
-  def all_subscription_plan
-    Payment.all
+  def all_subscription_plan target_date
+
+    begin_date = target_date.beginning_of_month
+    end_date = target_date.end_of_month
+
+    payment = Payment.all
       .eager_load(account: { subscriber: { subscription: :plan }})
-      .find(self.account.subscriber_id)
-      .account
+      .where("subscriptions.start_date >= ?", begin_date)
+      .where("subscriptions.end_date <=  ? OR subscriptions.end_date IS NULL", end_date )
+      .find_by(id: self.account.subscriber_id)
+
+    return [] if payment.nil?
+
+    payment.account
       .subscriber
       .subscription.map {|e|
         e.plan
       }
   end
 
-  def all_subscription_cost
-    all_subscription_plan.map {|e|
+  def all_subscription_cost target_date
+    all_subscription_plan(target_date).map {|e|
         e.cost
       }
       .sum
   end
 
-  def all_publish_plan
-    Payment.all
+  def all_publish_plan target_date
+
+    begin_date = target_date.beginning_of_month
+    end_date = target_date.end_of_month
+
+    payment = Payment.all
       .eager_load(account: { publisher: { subscription: :plan }})
-      .find(self.account.publisher_id)
-      .account
+      .where("subscriptions.start_date >= ?", begin_date)
+      .where("subscriptions.end_date <=  ? OR subscriptions.end_date IS NULL", end_date )
+      .find_by(id: self.account.publisher_id)
+
+    return [] if payment.nil?
+
+    payment.account
       .publisher
       .subscription.map {|e|
         e.plan
       }
   end
 
-  def all_publish_cost
-    all_publish_plan.map {|e|
+  def all_publish_cost target_date
+    all_publish_plan(target_date).map {|e|
         e.cost
       }
       .sum
   end
 
-  def all_publish_fee
-    all_publish_plan.map {|e|
+  def all_publish_fee target_date
+    all_publish_plan(target_date).map {|e|
         e.cost
       }
       # TODO: 期間で絞る

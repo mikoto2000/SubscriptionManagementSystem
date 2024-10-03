@@ -131,7 +131,7 @@
           <td><%= payment.payment_date && l(payment.payment_date) %></td>
           <td><%= payment.payment_status.name %></td>
           <td><%= payment.account.name %></td>
-          <td><%= payment.all_subscription_cost - payment.all_publish_cost + payment.all_publish_fee %></td>
+          <td><%= payment.all_subscription_cost(Time.zone.today) - payment.all_publish_cost(Time.zone.today) + payment.all_publish_fee(Time.zone.today) %></td>
           <td><%= payment.created_at && l(payment.created_at) %></td>
           <td><%= payment.updated_at && l(payment.updated_at) %></td>
           <td>
