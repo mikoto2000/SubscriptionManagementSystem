@@ -31,7 +31,8 @@ entity Plan {
 entity Payment {
   * id
   --
-  * month_for_payment: date
+  * year_for_payment: integer
+  * month_for_payment: integer
     payment_date: date
   * payment_status: (FK: payment_status(id))
   * account_id (FK:account(id))

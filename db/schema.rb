@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_02_115804) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_03_073216) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,17 +48,20 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_02_115804) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.string "type"
-    t.date "month_for_payment"
     t.date "payment_date"
     t.bigint "payment_status_id", null: false
     t.bigint "publisher_id"
     t.bigint "subscriber_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "year", null: false
+    t.integer "month", null: false
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_payments_on_account_id"
     t.index ["payment_status_id"], name: "index_payments_on_payment_status_id"
     t.index ["publisher_id"], name: "index_payments_on_publisher_id"
     t.index ["subscriber_id"], name: "index_payments_on_subscriber_id"
+    t.index ["year", "month", "account_id"], name: "index_payments_on_year_and_month_and_account_id", unique: true
   end
 
   create_table "plan_statuses", force: :cascade do |t|
@@ -102,6 +105,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_02_115804) do
     t.index ["subscriber_id"], name: "index_subscriptions_on_subscriber_id"
   end
 
+  add_foreign_key "payments", "accounts"
   add_foreign_key "payments", "payment_statuses"
   add_foreign_key "payments", "publishers"
   add_foreign_key "payments", "subscribers"
