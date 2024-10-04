@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :plan_statuses
   devise_for :accounts
 
-  resources :accounts
+  resources :publisher_accounts
   resources :subscriber_payments
   resources :publisher_payments
   resources :payment_statuses

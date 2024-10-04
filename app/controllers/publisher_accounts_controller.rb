@@ -1,4 +1,4 @@
-class AccountsController < ApplicationController
+class PublisherAccountsController < ApplicationController
   before_action :set_account, only: %i[show]
   before_action :set_plans, only: %i[show]
 

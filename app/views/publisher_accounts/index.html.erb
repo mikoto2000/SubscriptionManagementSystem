@@ -2,6 +2,6 @@
 
 <ul>
 <% @accounts.each do |account| %>
-  <li><%= link_to account.name, account_path(account.id) %></li>
+  <li><%= link_to account.name, publisher_account_path(account.id) %></li>
 <% end %>
 </ul>
