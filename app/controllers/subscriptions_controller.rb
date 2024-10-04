@@ -1,9 +1,13 @@
 class SubscriptionsController < ApplicationController
+  include Pundit
   include Pagy::Backend
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   before_action :set_subscription, only: %i[show edit update destroy]
 
   # GET /subscriptions
   def index
+    authorize Subscription
     @subscriptions = Subscription
       .eager_load(:publisher)
       .eager_load(:subscriber)
@@ -15,19 +19,23 @@ class SubscriptionsController < ApplicationController
 
   # GET /subscriptions/1
   def show
+    authorize Subscription
   end
 
   # GET /subscriptions/new
   def new
+    authorize Subscription
     @subscription = Subscription.new
   end
 
   # GET /subscriptions/1/edit
   def edit
+    authorize Subscription
   end
 
   # POST /subscriptions
   def create
+    authorize Subscription
     @subscription = Subscription.new(subscription_params)
 
     if @subscription.save
@@ -35,7 +43,7 @@ class SubscriptionsController < ApplicationController
       if params[:commit] == "作成"
         redirect_to @subscription, notice: t("controller.create.success", model: Subscription.model_name.human)
       else
-        redirect_to account_path(:id => params[:subscription][:publisher_id]), notice: t("controller.create.success", model: Subscription.model_name.human)
+        redirect_to Subscriptions_path(:id => params[:subscription][:publisher_id]), notice: t("controller.create.success", model: Subscription.model_name.human)
       end
     else
       render :new, status: :unprocessable_entity
@@ -44,6 +52,7 @@ class SubscriptionsController < ApplicationController
 
   # PATCH/PUT /subscriptions/1
   def update
+    authorize Subscription
     if @subscription.update(subscription_params)
       # TODO: ちゃんとリクエスト画面がわかるパラメーターを追加する
       if params[:commit] == "更新"
@@ -58,6 +67,7 @@ class SubscriptionsController < ApplicationController
 
   # DELETE /subscriptions/1
   def destroy
+    authorize Subscription
     @subscription.destroy!
     redirect_to subscriptions_url, notice: t("controller.destroy.success", model: Subscription.model_name.human)
   end

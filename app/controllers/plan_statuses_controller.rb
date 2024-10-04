@@ -4,6 +4,7 @@ class PlanStatusesController < ApplicationController
 
   # GET /plan_statuses
   def index
+    authorize Account
     @plan_statuses = PlanStatus
       .all
     @q = @plan_statuses.ransack(params[:q])
@@ -13,19 +14,23 @@ class PlanStatusesController < ApplicationController
 
   # GET /plan_statuses/1
   def show
+    authorize Account
   end
 
   # GET /plan_statuses/new
   def new
+    authorize Account
     @plan_status = PlanStatus.new
   end
 
   # GET /plan_statuses/1/edit
   def edit
+    authorize Account
   end
 
   # POST /plan_statuses
   def create
+    authorize Account
     @plan_status = PlanStatus.new(plan_status_params)
 
     if @plan_status.save
@@ -37,6 +42,7 @@ class PlanStatusesController < ApplicationController
 
   # PATCH/PUT /plan_statuses/1
   def update
+    authorize Account
     if @plan_status.update(plan_status_params)
       redirect_to @plan_status, notice: t("controller.edit.success", model: PlanStatus.model_name.human)
     else
@@ -46,6 +52,7 @@ class PlanStatusesController < ApplicationController
 
   # DELETE /plan_statuses/1
   def destroy
+    authorize Account
     @plan_status.destroy!
     redirect_to plan_statuses_url, notice: t("controller.destroy.success", model: PlanStatus.model_name.human)
   end

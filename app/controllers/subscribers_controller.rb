@@ -1,9 +1,13 @@
 class SubscribersController < ApplicationController
+  include Pundit
   include Pagy::Backend
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   before_action :set_subscriber, only: %i[show edit update destroy]
 
   # GET /subscribers
   def index
+    authorize Subscriber
     @subscribers = Subscriber
       .all
     @q = @subscribers.ransack(params[:q])
@@ -13,19 +17,23 @@ class SubscribersController < ApplicationController
 
   # GET /subscribers/1
   def show
+    authorize Subscriber
   end
 
   # GET /subscribers/new
   def new
+    authorize Subscriber
     @subscriber = Subscriber.new
   end
 
   # GET /subscribers/1/edit
   def edit
+    authorize Subscriber
   end
 
   # POST /subscribers
   def create
+    authorize Subscriber
     @subscriber = Subscriber.new(subscriber_params)
 
     if @subscriber.save
@@ -37,6 +45,7 @@ class SubscribersController < ApplicationController
 
   # PATCH/PUT /subscribers/1
   def update
+    authorize Subscriber
     if @subscriber.update(subscriber_params)
       redirect_to @subscriber, notice: t("controller.edit.success", model: Subscriber.model_name.human)
     else
@@ -46,6 +55,7 @@ class SubscribersController < ApplicationController
 
   # DELETE /subscribers/1
   def destroy
+    authorize Subscriber
     @subscriber.destroy!
     redirect_to subscribers_url, notice: t("controller.destroy.success", model: Subscriber.model_name.human)
   end

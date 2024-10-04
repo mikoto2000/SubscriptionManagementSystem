@@ -1,9 +1,13 @@
 class CommissionMastersController < ApplicationController
+  include Pundit
   include Pagy::Backend
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   before_action :set_commission_master, only: %i[show edit update destroy]
 
   # GET /commission_masters
   def index
+    authorize CommissionMaster
     @commission_masters = CommissionMaster
       .all
     @q = @commission_masters.ransack(params[:q])
@@ -13,19 +17,23 @@ class CommissionMastersController < ApplicationController
 
   # GET /commission_masters/1
   def show
+    authorize CommissionMaster
   end
 
   # GET /commission_masters/new
   def new
+    authorize CommissionMaster
     @commission_master = CommissionMaster.new
   end
 
   # GET /commission_masters/1/edit
   def edit
+    authorize CommissionMaster
   end
 
   # POST /commission_masters
   def create
+    authorize CommissionMaster
     @commission_master = CommissionMaster.new(commission_master_params)
 
     if @commission_master.save
@@ -37,6 +45,7 @@ class CommissionMastersController < ApplicationController
 
   # PATCH/PUT /commission_masters/1
   def update
+    authorize CommissionMaster
     if @commission_master.update(commission_master_params)
       redirect_to @commission_master, notice: t("controller.edit.success", model: CommissionMaster.model_name.human)
     else
@@ -46,6 +55,7 @@ class CommissionMastersController < ApplicationController
 
   # DELETE /commission_masters/1
   def destroy
+    authorize CommissionMaster
     @commission_master.destroy!
     redirect_to commission_masters_url, notice: t("controller.destroy.success", model: CommissionMaster.model_name.human)
   end

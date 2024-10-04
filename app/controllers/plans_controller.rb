@@ -1,9 +1,13 @@
 class PlansController < ApplicationController
+  include Pundit
   include Pagy::Backend
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   before_action :set_plan, only: %i[show edit update destroy]
 
   # GET /plans
   def index
+    authorize Plan
     @plans = Plan
       .eager_load(:publisher)
     @q = @plans.ransack(params[:q])
@@ -13,19 +17,23 @@ class PlansController < ApplicationController
 
   # GET /plans/1
   def show
+    authorize Plan
   end
 
   # GET /plans/new
   def new
+    authorize Plan
     @plan = Plan.new
   end
 
   # GET /plans/1/edit
   def edit
+    authorize Plan
   end
 
   # POST /plans
   def create
+    authorize Plan
     @plan = Plan.new(plan_params)
 
     if @plan.save
@@ -42,6 +50,7 @@ class PlansController < ApplicationController
 
   # PATCH/PUT /plans/1
   def update
+    authorize Plan
     if @plan.update(plan_params)
       redirect_to @plan, notice: t("controller.edit.success", model: Plan.model_name.human)
     else
@@ -51,6 +60,7 @@ class PlansController < ApplicationController
 
   # DELETE /plans/1
   def destroy
+    authorize Plan
     @plan.destroy!
     redirect_to plans_url, notice: t("controller.destroy.success", model: Plan.model_name.human)
   end
