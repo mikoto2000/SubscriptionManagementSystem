@@ -38,6 +38,7 @@
       <li><%= link_to "パブリッシャーを探す", publisher_accounts_path %></li>
       <li><%= link_to "ログアウト", destroy_account_session_path, data: { turbo_method: :delete } %></li>
     </ul>
+    <% if current_account && current_account.role == "admin" %>
     <div>
       <h1>管理画面</h1>
       <ul>
@@ -51,5 +52,6 @@
         <li><%= link_to :commission_masters, commission_masters_path %></li>
       </ul>
     </div>
+    <% end %>
   </body>
 </html>
