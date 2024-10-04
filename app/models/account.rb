@@ -14,9 +14,11 @@ class Account < ApplicationRecord
   end
 
   validates :name, presence: true
+  validates :publisher, presence: false
+  validates :subscriber, presence: false
 
-  belongs_to :publisher
-  belongs_to :subscriber
+  belongs_to :publisher, optional: true
+  belongs_to :subscriber, optional: true
 
   private
 

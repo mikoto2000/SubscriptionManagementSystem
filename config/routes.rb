@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
+  devise_for :accounts
+
   resources :accounts
   resources :payments
   resources :plan_statuses
-  devise_for :accounts
-
   resources :publisher_accounts
   resources :subscriber_payments
   resources :publisher_payments

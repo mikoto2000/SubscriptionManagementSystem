@@ -1,9 +1,13 @@
 class AccountsController < ApplicationController
+  include Pundit
   include Pagy::Backend
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   before_action :set_account, only: %i[show edit update destroy]
 
   # GET /accounts
   def index
+    authorize Account
     @accounts = Account
       .eager_load(:publisher)
       .eager_load(:subscriber)
@@ -14,19 +18,23 @@ class AccountsController < ApplicationController
 
   # GET /accounts/1
   def show
+    authorize Account
   end
 
   # GET /accounts/new
   def new
+    authorize Account
     @account = Account.new
   end
 
   # GET /accounts/1/edit
   def edit
+    authorize Account
   end
 
   # POST /accounts
   def create
+    authorize Account
     @account = Account.new(account_params)
 
     if @account.save
@@ -38,6 +46,7 @@ class AccountsController < ApplicationController
 
   # PATCH/PUT /accounts/1
   def update
+    authorize Account
     if @account.update(account_params)
       redirect_to @account, notice: t("controller.edit.success", model: Account.model_name.human)
     else
@@ -47,6 +56,7 @@ class AccountsController < ApplicationController
 
   # DELETE /accounts/1
   def destroy
+    authorize Account
     @account.destroy!
     redirect_to accounts_url, notice: t("controller.destroy.success", model: Account.model_name.human)
   end
@@ -64,5 +74,10 @@ class AccountsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def account_params
       params.require(:account).permit(:name, :email_address, :publisher_id, :subscriber_id)
+    end
+
+    def user_not_authorized
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to(request.referer || root_path)
     end
 end
