@@ -31,7 +31,8 @@ entity Plan {
 entity Payment {
   * id
   --
-  * year_for_payment: integer
+  * year: integer
+  * month: integer
   * month_for_payment: integer
     payment_date: date
   * payment_status: (FK: payment_status(id))
@@ -42,7 +43,7 @@ entity Account {
   * id
   --
   * name
-  * email_address
+  * email
   * publisher_id (FK:publisher(id)
   * subscriber_id (FK:subscriber(id)
 }
@@ -54,6 +55,14 @@ entity PaymentStatus {
 }
 
 note right: 1:支払い未済\n2:支払い済
+
+entity PlanStatus {
+  * id
+  --
+  * name
+}
+
+note right: 1:公開\n2:非公開
 
 entity CommissionMaster {
   from: date
@@ -72,6 +81,8 @@ Account }o--|| Publisher
 Account }o--|| Subscriber
 
 Payment }o--|| Account
+
+Plan ||--|{ PlanStatus
 
 @enduml
 
