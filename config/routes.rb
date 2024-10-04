@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :accounts
   resources :payments
   resources :plan_statuses
   devise_for :accounts

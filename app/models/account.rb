@@ -6,7 +6,11 @@ class Account < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   def self.ransackable_attributes(_auth_object = nil)
-    %w[id created_at updated_at]
+    %w[id name email_address publisher subscriber created_at updated_at]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["publisher", "subscriber"]
   end
 
   validates :name, presence: true
