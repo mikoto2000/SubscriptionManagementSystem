@@ -14,8 +14,7 @@ class Payment < ApplicationRecord
 
     payment = Payment.all
       .eager_load(account: { subscriber: { subscription: :plan }})
-      .where("subscriptions.start_date >= ?", begin_date)
-      .where("subscriptions.end_date <=  ? OR subscriptions.end_date IS NULL", end_date )
+      .where("subscriptions.start_date <= ? AND (subscriptions.end_date >= ? OR subscriptions.end_date is null)", end_date, begin_date)
       .find_by(id: self.account.subscriber_id)
 
     return [] if payment.nil?
@@ -41,8 +40,7 @@ class Payment < ApplicationRecord
 
     payment = Payment.all
       .eager_load(account: { publisher: { subscription: :plan }})
-      .where("subscriptions.start_date >= ?", begin_date)
-      .where("subscriptions.end_date <=  ? OR subscriptions.end_date IS NULL", end_date )
+      .where("subscriptions.start_date <= ? AND (subscriptions.end_date >= ? OR subscriptions.end_date is null)", end_date, begin_date)
       .find_by(id: self.account.publisher_id)
 
     return [] if payment.nil?
