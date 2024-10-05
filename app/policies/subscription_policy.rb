@@ -25,7 +25,7 @@ class SubscriptionPolicy < ApplicationPolicy
     user.role == "admin"
   end
   def create?
-    user.role == "admin"
+    true
   end
   def update?
     user.role == "admin"

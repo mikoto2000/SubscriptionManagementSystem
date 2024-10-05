@@ -12,10 +12,15 @@ class Payment < ApplicationRecord
     begin_date = target_date.beginning_of_month
     end_date = target_date.end_of_month
 
+    puts "👺"
+    puts self.account.subscriber_id
+
     payment = Payment.all
       .eager_load(account: { subscriber: { subscription: :plan }})
       .where("subscriptions.start_date <= ? AND (subscriptions.end_date >= ? OR subscriptions.end_date is null)", end_date, begin_date)
-      .find_by(id: self.account.subscriber_id)
+      .find_by(account_id: self.account.subscriber_id)
+
+    pp payment
 
     return [] if payment.nil?
 
@@ -26,7 +31,7 @@ class Payment < ApplicationRecord
       }
   end
 
-  def all_subscription_cost target_date
+  def all_subscription_price target_date
     all_subscription_plan(target_date).map {|e|
         e.cost
       }
@@ -41,7 +46,7 @@ class Payment < ApplicationRecord
     payment = Payment.all
       .eager_load(account: { publisher: { subscription: :plan }})
       .where("subscriptions.start_date <= ? AND (subscriptions.end_date >= ? OR subscriptions.end_date is null)", end_date, begin_date)
-      .find_by(id: self.account.publisher_id)
+      .find_by(account_id: self.account.subscriber_id)
 
     return [] if payment.nil?
 
@@ -52,7 +57,7 @@ class Payment < ApplicationRecord
       }
   end
 
-  def all_publish_cost target_date
+  def all_publish_income target_date
     all_publish_plan(target_date).map {|e|
         e.cost
       }

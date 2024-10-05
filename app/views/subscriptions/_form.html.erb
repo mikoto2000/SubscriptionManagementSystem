@@ -37,9 +37,9 @@
     <div class="ps-2">
       <%= form.collection_select(
             Subscription.reflect_on_association(:subscriber).foreign_key,
-            Subscription.reflect_on_association(:subscriber).klass.all,
-            :id,
-            :name,
+            Subscription.reflect_on_association(:publisher).klass.all.map {|e| [e.id, e.account.name]},
+            :first,
+            :last,
             { include_blank: "選択なし" }
           ) %>
     </div>

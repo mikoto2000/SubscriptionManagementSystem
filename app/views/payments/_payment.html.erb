@@ -1,3 +1,4 @@
+<%- target_month = Date.new(payment.year, payment.month, 1) %>
 <div id="<%= dom_id payment %>">
   <table class="table table-hover">
     <tr>
@@ -56,6 +57,66 @@
       </td>
       <td>
         <%= payment.account.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:subscription_plans) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.all_subscription_plan(target_month).map {|e| e.name }.join(", ") %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:subscription_price) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.all_subscription_price(target_month) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:subscription_of_your_publish_plans) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.all_publish_plan(target_month).group_by {|e| e.name }.map{|key, value| key + " x " + value.length.to_s }.join(", ")  %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:publish_income) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.all_publish_income(target_month) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:publish_fee) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.all_publish_fee(target_month) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>
+          <%= Payment.human_attribute_name(:profit) %>
+        </strong>
+      </td>
+      <td>
+        <%= payment.all_subscription_price(target_month) - payment.all_publish_income(target_month) + payment.all_publish_fee(target_month) %>
       </td>
     </tr>
     <tr>

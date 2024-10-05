@@ -114,7 +114,7 @@
         <th><%= sort_link(@q, :payment_status_id, default_order: :asc, class: "d-block") %></th>
         <th><%= sort_link(@q, :account_id, default_order: :asc, class: "d-block") %></th>
         <!-- <th><%= :plans %></th> -->
-        <th><%= :cost %></th>
+        <th><%= :price %></th>
         <th><%= sort_link(@q, :created_at, default_order: :asc, class: "d-block") %></th>
         <th><%= sort_link(@q, :updated_at, default_order: :asc, class: "d-block") %></th>
         <th><%= t("view.index.operation") %></th>
@@ -135,7 +135,7 @@
           <td><%= payment.account.name %></td>
           <!-- <td><%= payment.all_subscription_plan(target_month).map {|e| e.name }.join(", ") %></td> -->
           <td>
-            <%= payment.all_subscription_cost(target_month) - payment.all_publish_cost(target_month) + payment.all_publish_fee(target_month) %></td>
+            <%= payment.all_subscription_price(target_month) - payment.all_publish_income(target_month) + payment.all_publish_fee(target_month) %></td>
           <td><%= payment.created_at && l(payment.created_at) %></td>
           <td><%= payment.updated_at && l(payment.updated_at) %></td>
           <td>

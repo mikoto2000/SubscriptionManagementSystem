@@ -43,7 +43,7 @@ class SubscriptionsController < ApplicationController
       if params[:commit] == "作成"
         redirect_to @subscription, notice: t("controller.create.success", model: Subscription.model_name.human)
       else
-        redirect_to Subscriptions_path(:id => params[:subscription][:publisher_id]), notice: t("controller.create.success", model: Subscription.model_name.human)
+        redirect_to publisher_account_path(:id => params[:subscription][:publisher_id]), notice: t("controller.create.success", model: Subscription.model_name.human)
       end
     else
       render :new, status: :unprocessable_entity
